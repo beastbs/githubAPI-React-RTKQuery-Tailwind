@@ -4,36 +4,53 @@ import {
   useLazyGetUserReposQuery,
 } from "../store/github/github.api";
 import { useDebounce } from "../hooks/debounce";
-import { DropdownList } from "../components/ui/dropdown";
+import Dropdown from "../components/ui/dropdown";
 import { Paragraph } from "../components/common/typography";
 import RepoCardList from "../components/ui/repoCard";
+import { TextField } from "../components/common/form";
 
 const HomePage = () => {
-  const [search, setSearch] = useState("");
-  const [dropdown, setDropdown] = useState(false);
-  const debounced = useDebounce(search);
+  const [data, setData] = useState({
+    search: "",
+  });
+  const [isDropdown, setIsDropdown] = useState(false);
+  const debounced = useDebounce(data.search);
   const {
     isLoading,
     isError,
     data: users,
   } = useSearchUsersQuery(debounced, {
-    skip: debounced.length < 3, 
+    skip: debounced.length < 3,
     refetchOnFocus: true,
-
   });
   const [fetchRepos, { isLoading: areReposLoading, data: repos }] =
     useLazyGetUserReposQuery();
+
   useEffect(() => {
-    setDropdown(debounced.length >= 3 && users?.length! > 0);
+    document.addEventListener("click", (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === "INPUT") {
+        setIsDropdown(true);
+      } else {
+        setIsDropdown(false);
+      }
+    });
+  });
+
+  useEffect(() => {
+    setIsDropdown(debounced.length >= 3 && users?.length! > 0);
   }, [debounced, users]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
+    setData((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const clickHandler = (username: string) => {
     fetchRepos(username);
-    setDropdown(false);
+    setIsDropdown(false);
   };
 
   return (
@@ -44,16 +61,9 @@ const HomePage = () => {
         </Paragraph>
       )}
       <div className="relative w-[560px]">
-        <input
-          type="text"
-          className="border py-2 px-4 w-full h-[42px] mb-2 outline-0 hover:border-none hover:shadow-lg focus:border-none focus:shadow-md"
-          placeholder="Search for github user name..."
-          value={search}
-          onChange={handleChange}
-        />
-
-        {dropdown && (
-          <DropdownList
+        <TextField name="search" value={data.search} onChange={handleChange} />
+        {isDropdown && (
+          <Dropdown
             isLoading={isLoading}
             users={users}
             onClick={clickHandler}
@@ -64,7 +74,7 @@ const HomePage = () => {
           {areReposLoading && (
             <Paragraph classes="text-center">Repos are loading...</Paragraph>
           )}
-          {repos && <RepoCardList repos={repos}/>}
+          {repos && <RepoCardList repos={repos} />}
         </div>
       </div>
     </div>

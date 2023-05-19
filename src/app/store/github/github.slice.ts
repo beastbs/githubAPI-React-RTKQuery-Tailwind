@@ -22,6 +22,10 @@ export const githubSlice = createSlice({
       state.favorites = state.favorites.filter((f) => f !== action.payload);
       localStorage.setItem(LS_FAV_KEY, JSON.stringify(state.favorites));
     },
+    removeAll(state) {
+      state.favorites = [];
+      localStorage.setItem(LS_FAV_KEY, JSON.stringify(state.favorites));
+    },
   },
 });
 

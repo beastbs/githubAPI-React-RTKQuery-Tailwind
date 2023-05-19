@@ -1,15 +1,15 @@
-import React from 'react'
-import RepoCard from './repoCard'
-import { IRepo } from '../../../interfaces'
+import React from "react";
+import RepoCard from "./repoCard";
+import { IRepo } from "../../../interfaces";
 
-const RepoCardList = ({repos}:{repos:IRepo[]}) => {
+const RepoCardList = ({ repos }: { repos: IRepo[] }) => {
   return (
     <>
-    {repos?.map(repo => (
-      <RepoCard key={repo.id} repo={repo}/>
-    ))}
+      {repos?.map((repo) => (
+        <RepoCard key={repo.id} repo={repo} />
+      ))}
     </>
-  )
-}
+  );
+};
 
-export default RepoCardList
+export default RepoCardList;

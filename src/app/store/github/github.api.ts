@@ -2,9 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ServerResponse, IUser, IRepo } from "../../interfaces";
 
 export const githubApi = createApi({
-  reducerPath: "github/api", 
+  reducerPath: "github/api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.github.com/", 
+    baseUrl: "https://api.github.com/",
   }),
   refetchOnFocus: true,
   endpoints: (build) => ({
@@ -12,8 +12,8 @@ export const githubApi = createApi({
       query: (search: string) => ({
         url: `search/users`,
         params: {
-          q: search, 
-          per_page: 10, 
+          q: search,
+          per_page: 10,
         },
       }),
       transformResponse: (response: ServerResponse<IUser>) => response.items, // Можем трансформировать данные из Response
@@ -24,7 +24,6 @@ export const githubApi = createApi({
       }),
     }),
   }),
-}); 
+});
 
-
-export const { useSearchUsersQuery, useLazyGetUserReposQuery } = githubApi; 
+export const { useSearchUsersQuery, useLazyGetUserReposQuery } = githubApi;

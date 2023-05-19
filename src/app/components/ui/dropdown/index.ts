@@ -1,5 +1,5 @@
 import Dropdown from "./dropdown";
-import DropdownList from "./dropdownList";
+import DropdownItem from "./dropdownItem";
 
-export { DropdownList }
+export { DropdownItem }
 export default Dropdown

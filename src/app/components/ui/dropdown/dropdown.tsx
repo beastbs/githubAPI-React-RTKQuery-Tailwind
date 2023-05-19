@@ -1,14 +1,15 @@
 import React, { FC } from "react";
+import DropdownItem from "./dropdownItem";
 import { IDropdown } from "./interfaces";
 
-const Dropdown: FC<IDropdown> = ({ user, onClick }) => {
+const Dropdown: FC<IDropdown> = ({ users, isLoading, onClick }) => {
   return (
-    <li
-      onClick={() => onClick(user.login)}
-      className="py-2 px-4 hover:bg-slate-700 hover:text-white transition-colors cursor-pointer"
-    >
-      {user.login}
-    </li>
+    <ul className="list-none absolute top-[42px] max-h-[200px] overflow-y-scroll left-0 right-0 shadow-md bg-white">
+      {isLoading && <p className="text-center">Loading...</p>}
+      {users?.map((user) => (
+        <DropdownItem key={user.id} user={user} onClick={onClick} />
+      ))}
+    </ul>
   );
 };
 

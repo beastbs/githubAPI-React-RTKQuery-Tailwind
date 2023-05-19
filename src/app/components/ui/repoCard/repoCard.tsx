@@ -3,6 +3,7 @@ import { Paragraph, Subtitle } from "../../common/typography";
 import { useActions } from "../../../hooks/actions";
 import { useAppSelector } from "../../../hooks/redux";
 import { IRepo } from "../../../interfaces";
+import Button from "../../common/button";
 
 const RepoCard = ({ repo }: { repo: IRepo }) => {
   const { addFavorite, removeFavorite } = useActions();
@@ -32,21 +33,15 @@ const RepoCard = ({ repo }: { repo: IRepo }) => {
         <Paragraph classes="text-sm font-thin">{repo?.description}</Paragraph>
 
         {!isFav && (
-          <button
-            className="py-2 px-4 mr-2 bg-yellow-400 rounded hover:shadow-md transition-all"
-            onClick={addToFavorite}
-          >
+          <Button classes="py-2 px-4  mr-2 bg-yellow-400" onClick={addToFavorite}>
             Add
-          </button>
+          </Button>
         )}
 
         {isFav && (
-          <button
-            className="py-2 px-4 bg-red-600 rounded hover:shadow-md transition-all"
-            onClick={removeFromFavorite}
-          >
+          <Button classes="py-2 px-4 bg-red-600" onClick={removeFromFavorite}>
             Remove
-          </button>
+          </Button>
         )}
       </a>
     </div>
